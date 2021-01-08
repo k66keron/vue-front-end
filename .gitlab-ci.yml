@@ -1,0 +1,34 @@
+image: node:8.9.4-alpine
+
+stages:
+  - deploy
+
+deploy-develop:
+  stage: deploy
+  image: docker:18-git
+  when: manual
+  allow_failure: false
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    SERVER_IP: 10.17.2.154
+    SSH_USER: gitlab
+    SSH_KEY: /pk/gitlab
+    COMPOSE_PATH: dev-frontend-admin
+    COMPOSE_NAME: deployment-dev.yaml
+    DOCKERFILE_NAME: Dockerfile
+  services:
+    - name: docker:18-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD reg-gitlab.officemate.co.th
+    - docker build -f $DOCKERFILE_NAME --build-arg RAILS_ENV=develop -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+    - ssh -o "StrictHostKeyChecking=no" -i $SSH_KEY $SSH_USER@$SERVER_IP "mkdir -p ~/$COMPOSE_PATH"
+    - sed -i "s/GITLAB_IMAGE_TAG/$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA/g" ./$COMPOSE_NAME
+    - scp -o "StrictHostKeyChecking=no" -i $SSH_KEY $COMPOSE_NAME $SSH_USER@$SERVER_IP:~/$COMPOSE_PATH
+  script:
+    - ssh -o "StrictHostKeyChecking=no" -i $SSH_KEY $SSH_USER@$SERVER_IP
+      "cd ~/$COMPOSE_PATH \
+      && kubectl apply -f $COMPOSE_NAME"
+  only:
+    - develop

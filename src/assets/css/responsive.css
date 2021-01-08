@@ -1,0 +1,52 @@
+@media screen and (max-width: 767px) {
+  .margin-button > .btn-group {
+    margin-right: 0px;
+  }
+  .login-page .justify-content-center {
+    padding: 30px;
+  }
+  .login-box {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .login-box .btn-width {
+    width: 100%;
+  }
+  .login-box .login-form {
+    padding: 30px;
+  }
+  .login-box .left-bg {
+    height: 100px;
+    width: 100%;
+    border-radius: 4px 4px 0px 0px;
+  }
+  .login-form {
+    width: 100% !important;
+  }
+  .login-form h4 {
+    margin-bottom: 30px !important;
+  }
+  .login-form .alert-dismissible {
+    margin-bottom: 0px;
+  }
+}
+@media screen and (max-width: 992px) {
+  /*     .left-side, */
+  .wrapper,
+  .navbar-custom.sticky {
+    width: 100%;
+  }
+  .hide-leftBar .left-side {
+    left: -100%;
+  }
+  .left-side > .nav-logo {
+    display: none;
+  }
+  .left-side {
+    margin-top: 58px;
+    height: calc(100% - 58px);
+  }
+  .left-side ul.menu {
+    height: calc(100% - 55px);
+  }
+}
