@@ -29,11 +29,11 @@
             >
               <router-link to="/customer/register">Register</router-link>
             </li>
-            <li
+            <!-- <li
               :class="currentPage.name.includes('ListCustomer') ? 'active' : ''"
             >
               <router-link to="/customer/list">List</router-link>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li :class="currentPage.name.includes('Invoices') ? 'active' : ''">
