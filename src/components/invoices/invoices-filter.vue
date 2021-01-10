@@ -19,7 +19,6 @@
               :defaultValue="filterBasic.customerId"
               label="Customer ID"
               vertical
-              type="number"
               maxlength="20"
               placeholder="Customer ID"
             ></input-text>
@@ -75,7 +74,6 @@
               :isEmpty="validateAdvanced.invoiceNo"
               label="Invoice No."
               vertical
-              type="text"
               maxlength="20"
               placeholder="Invoice No."
             ></input-text>
@@ -87,7 +85,6 @@
               :isEmpty="validateAdvanced.customerId"
               label="Customer ID"
               vertical
-              type="text"
               maxlength="20"
               placeholder="Customer ID"
             ></input-text>

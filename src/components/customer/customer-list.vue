@@ -198,7 +198,7 @@ export default {
         {
           key: 'action',
           label: 'Action',
-          thStyle: 'width: 100px',
+          thStyle: 'width: 120px',
           thClass: 'text-center',
           tdClass: 'text-center',
         },
