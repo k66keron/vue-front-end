@@ -57,6 +57,25 @@
                 v-html="data.value"
               ></span>
             </template>
+            <template v-slot:cell(action)="data">
+              <button
+                class="btn btn-edit pt-0 pb-0"
+                @click="targetEdit = data.item.cid"
+              >
+                <b-icon-pencil></b-icon-pencil>
+              </button>
+              <button
+                class="btn btn-delete pt-0 pb-0"
+                @click="
+                  targetRemove = {
+                    cid: data.item.cid,
+                    email: data.item.email,
+                  }
+                "
+              >
+                <b-icon-x-circle-fill></b-icon-x-circle-fill>
+              </button>
+            </template>
           </b-table>
         </div>
       </div>
@@ -79,16 +98,26 @@
         ></b-pagination>
       </div>
     </div>
+    <customer-modal-edit :targetEdit="targetEdit" @close="targetEdit = ''" />
+    <customer-modal-remove
+      :targetRemove="targetRemove"
+      @close="targetRemove = {}"
+    />
   </div>
 </template>
 <script>
 import InputText from '@/components/share/input-text.vue'
 import SelectBasic from '@/components/share/select-basic.vue'
+import CustomerModalEdit from '@/components/customer/customer-edit-modal.vue'
+import CustomerModalRemove from '@/components/customer/customer-remove-modal.vue'
+
 export default {
   name: 'CustomersFilter',
   components: {
     'input-text': InputText,
     'select-basic': SelectBasic,
+    'customer-modal-edit': CustomerModalEdit,
+    'customer-modal-remove': CustomerModalRemove,
   },
   props: {
     data: {
@@ -126,13 +155,13 @@ export default {
         {
           key: 'index',
           label: 'No.',
-          thStyle: 'width:80px',
+          thStyle: 'width:60px',
           class: 'text-center',
         },
         {
           key: 'name',
           label: 'Customer Name',
-          thStyle: 'width: 200px',
+          thStyle: 'width: 240px',
           sortable: true,
           formatter: (value, key, item) => {
             return value + ' ' + item.surname
@@ -141,7 +170,7 @@ export default {
         {
           key: 'phone',
           label: 'Phone',
-          thStyle: 'width: 200px',
+          thStyle: 'width: 120px',
           sortable: true,
           formatter: (value, key, item) => {
             return value + ' ' + item.phoneExt
@@ -163,10 +192,19 @@ export default {
           key: 'status',
           label: 'Status',
           class: 'text-center',
-          thStyle: 'width: 200px',
+          thStyle: 'width: 100px',
           sortable: true,
         },
+        {
+          key: 'action',
+          label: 'Action',
+          thStyle: 'width: 100px',
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
       ],
+      targetEdit: '',
+      targetRemove: {},
     }
   },
   watch: {

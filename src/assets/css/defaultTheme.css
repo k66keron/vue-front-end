@@ -860,3 +860,10 @@ button {
 .custom-control-label {
   cursor: pointer;
 }
+.custom-control-label > span.label {
+  position: relative;
+  top: 2px;
+}
+.modal-content > .modal-footer button {
+  font-size: 11px !important;
+}

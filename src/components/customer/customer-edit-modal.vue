@@ -10,50 +10,97 @@
   >
     <div slot="default">
       <div class="row">
-        <div class="col-sm-12 col-md-4">
-          <input-text
-            @value="formEditInfo.name = $event"
-            :validate="validateEditInfo.name"
-            labelText="Name"
-            placeholder="Enter your name"
-            format="label-row"
-            type="text"
-            :defaultValue="editValue.name"
-          ></input-text>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-12">
+              <input-text
+                :defaultValue="editValue.name"
+                @value="formEditInfo.name = $event"
+                :validateText="
+                  validateEditInfo.name ? 'Please insert Name' : ''
+                "
+                :isEmpty="validateEditInfo.name"
+                label="Name"
+                vertical
+                type="text"
+                maxlength="30"
+                placeholder="Name"
+              ></input-text>
+            </div>
+            <div class="col-12">
+              <input-text
+                :defaultValue="editValue.surname"
+                @value="formEditInfo.surname = $event"
+                :validateText="
+                  validateEditInfo.surname ? 'Please insert Surname' : ''
+                "
+                :isEmpty="validateEditInfo.surname"
+                label="Surname"
+                vertical
+                type="text"
+                maxlength="30"
+                placeholder="Surname"
+              ></input-text>
+            </div>
+            <div class="col-12">
+              <input-text
+                :defaultValue="editValue.phone"
+                @value="formEditInfo.phone = $event"
+                label="Phone"
+                vertical
+                type="number"
+                maxlength="10"
+                placeholder="Phone"
+                width="calc(100% - 120px)"
+              ></input-text>
+              <input-text
+                :defaultValue="editValue.phoneExt"
+                @value="formEditInfo.phoneExt = $event"
+                label="ext"
+                vertical
+                type="number"
+                maxlength="5"
+                placeholder="ext"
+                width="120px"
+              ></input-text>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-12 col-md-4">
-          <input-text
-            @value="formEditInfo.surname = $event"
-            :validate="validateEditInfo.surname"
-            labelText="Surname"
-            placeholder="Enter your surname"
-            format="label-row"
-            type="text"
-            :defaultValue="editValue.surname"
-          ></input-text>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-12">
+              <input-text
+                label="Email"
+                vertical
+                maxlength="30"
+                type="email"
+                placeholder="Email"
+                :defaultValue="editValue.email"
+                disabled
+              ></input-text>
+            </div>
+            <div class="col-12">
+              <input-text
+                textarea
+                @value="formEditInfo.address = $event"
+                label="Address"
+                vertical
+                maxlength="255"
+                placeholder="Please enter your address..."
+                :defaultValue="editValue.address"
+              ></input-text>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-12 col-md-4">
-          <input-text
-            @value="formEditInfo.phone = $event"
-            :validate="validateEditInfo.phone"
-            width="70%"
-            labelText="Phone"
-            maxlength="10"
-            placeholder="Enter your phone"
-            format="label-row"
-            type="number"
-            :defaultValue="editValue.phone"
-          ></input-text>
-          <input-text
-            @value="formEditInfo.phoneExt = $event"
-            width="30%"
-            labelText="ext"
-            maxlength="3"
-            placeholder="Ext."
-            format="label-row"
-            type="number"
-            :defaultValue="editValue.phoneExt"
-          ></input-text>
+        <div class="col-12">
+          <b-form-radio-group v-model="editValue.status" name="status-radios">
+            <b-form-radio value="Active"
+              ><span class="label label-active">Active</span></b-form-radio
+            >
+            <b-form-radio value="InActive"
+              ><span class="label label-inactive">InActive</span></b-form-radio
+            >
+          </b-form-radio-group>
         </div>
       </div>
     </div>
@@ -75,6 +122,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { eventBus } from '@/main.js'
 
 import InputText from '@/components/share/input-text.vue'
 export default {
@@ -94,16 +142,18 @@ export default {
         phoneExt: '',
         email: '',
         address: '',
+        status: '',
       },
       formEditInfo: {
         name: '',
         surname: '',
         phone: '',
         phoneExt: '',
+        address: '',
       },
       validateEditInfo: {
-        // name: false,
-        // surname: false,
+        name: false,
+        surname: false,
       },
     }
   },
@@ -126,29 +176,48 @@ export default {
             this.editValue.phoneExt = this.GET_CUSTOMER(val).phoneExt
             this.editValue.email = this.GET_CUSTOMER(val).email
             this.editValue.address = this.GET_CUSTOMER(val).address
+            this.editValue.status = this.GET_CUSTOMER(val).status
           })
         } else {
-          this.editValue = {
-            name: '',
-            surname: '',
-            phone: '',
-            phoneExt: '',
-            email: '',
-            address: '',
-          }
           this.$refs['edit-modal'].hide()
+          this.$nextTick(() => {
+            this.editValue = {
+              name: '',
+              surname: '',
+              phone: '',
+              phoneExt: '',
+              email: '',
+              address: '',
+              status: '',
+            }
+          })
         }
       },
       deep: true,
     },
   },
   methods: {
+    ...mapActions('CustomerStorage', ['EDIT_CUSTOMER_DATA']),
     onClose() {
       this.$refs['edit-modal'].hide()
-      this.$emit('close')
+      setTimeout(() => {
+        this.$emit('close')
+      }, 500)
     },
     submitEditInfo() {
-      console.log(this.formEditInfo)
+      this.EDIT_CUSTOMER_DATA({
+        cid: this.targetEdit,
+        edit: {
+          name: this.formEditInfo.name,
+          surname: this.formEditInfo.surname,
+          phone: this.formEditInfo.phone,
+          phoneExt: this.formEditInfo.phoneExt,
+          address: this.formEditInfo.address,
+          status: this.editValue.status,
+        },
+      })
+      eventBus.$emit('on-toast', 'success', 'Success', 'Update complete.')
+      this.onClose()
     },
   },
 }

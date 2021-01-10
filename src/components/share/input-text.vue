@@ -26,7 +26,12 @@
     >
     </textarea>
     <span class="validate-text" v-if="addEmptyClass || errorEmail">
-      {{ validateText }}
+      <template v-if="specificText">
+        {{ specificText }}
+      </template>
+      <template v-else>
+        {{ validateText }}
+      </template>
     </span>
   </div>
 </template>
@@ -46,6 +51,8 @@ export default {
     defaultValue: { type: String, default: '' },
     textarea: { type: Boolean, default: false },
     vertical: { type: Boolean, default: false },
+    specific: { type: Boolean, default: false },
+    specificText: { type: String, default: '' },
   },
   computed: {
     horizontal: function () {
@@ -54,6 +61,10 @@ export default {
     addEmptyClass: function () {
       if (this.isEmpty && this.input === '') {
         return true
+      } else if (this.specific) {
+        return true
+      } else {
+        return false
       }
     },
   },

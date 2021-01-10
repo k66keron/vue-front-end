@@ -2,98 +2,88 @@
   <div class="container-fluid mt-4">
     <breadcrumb :items="breadcrumbItems" />
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-md-4 col-lg-3">
         <div class="card">
           <div class="card-body pb-0" v-if="reloadInfo">
             <div class="row">
-              <div class="col-sm-12">
-                <div class="row">
-                  <div class="col-12">
-                    <input-text
-                      @value="formInfo.name = $event"
-                      :validateText="
-                        validateInfo.name ? 'Please insert Name' : ''
-                      "
-                      :isEmpty="validateInfo.name"
-                      label="Name"
-                      vertical
-                      type="text"
-                      maxlength="30"
-                      placeholder="Name"
-                    ></input-text>
-                  </div>
-                  <div class="col-12">
-                    <input-text
-                      @value="formInfo.surname = $event"
-                      :validateText="
-                        validateInfo.surname ? 'Please insert Surname' : ''
-                      "
-                      :isEmpty="validateInfo.surname"
-                      label="Surname"
-                      vertical
-                      type="text"
-                      maxlength="30"
-                      placeholder="Surname"
-                    ></input-text>
-                  </div>
-                  <div class="col-12">
-                    <input-text
-                      @value="formInfo.phone = $event"
-                      label="Phone"
-                      vertical
-                      type="number"
-                      maxlength="10"
-                      placeholder="Phone"
-                      width="calc(100% - 120px)"
-                    ></input-text>
-                    <input-text
-                      @value="formInfo.phoneExt = $event"
-                      label="ext"
-                      vertical
-                      type="number"
-                      maxlength="5"
-                      placeholder="ext"
-                      width="120px"
-                    ></input-text>
-                  </div>
-                </div>
-                <!-- </div>
-              <div class="col-sm-6"> -->
-                <div class="row">
-                  <div class="col-12">
-                    <input-text
-                      @value="formInfo.email = $event"
-                      :validateText="
-                        validateInfo.email
-                          ? 'Please insert email'
-                          : '' || /\S+@\S+\.\S+/.test(formInfo.email)
-                          ? ''
-                          : 'Incorrect email format'
-                      "
-                      :isEmpty="validateInfo.email"
-                      label="Email"
-                      vertical
-                      maxlength="30"
-                      type="email"
-                      placeholder="Email"
-                      :defaultValue="formInfo.email"
-                    ></input-text>
-                  </div>
-                  <div class="col-12">
-                    <input-text
-                      textarea
-                      @value="formInfo.address = $event"
-                      :validateText="
-                        validateInfo.address ? 'Please insert Address' : ''
-                      "
-                      :isEmpty="validateInfo.address"
-                      label="Address"
-                      vertical
-                      maxlength="255"
-                      placeholder="Please enter your address..."
-                    ></input-text>
-                  </div>
-                </div>
+              <div class="col-12">
+                <input-text
+                  @value="formInfo.name = $event"
+                  :validateText="validateInfo.name ? 'Please insert Name' : ''"
+                  :isEmpty="validateInfo.name"
+                  label="Name"
+                  vertical
+                  type="text"
+                  maxlength="30"
+                  placeholder="Name"
+                ></input-text>
+              </div>
+              <div class="col-12">
+                <input-text
+                  @value="formInfo.surname = $event"
+                  :validateText="
+                    validateInfo.surname ? 'Please insert Surname' : ''
+                  "
+                  :isEmpty="validateInfo.surname"
+                  label="Surname"
+                  vertical
+                  type="text"
+                  maxlength="30"
+                  placeholder="Surname"
+                ></input-text>
+              </div>
+              <div class="col-12">
+                <input-text
+                  @value="formInfo.phone = $event"
+                  label="Phone"
+                  vertical
+                  type="number"
+                  maxlength="10"
+                  placeholder="Phone"
+                  width="calc(100% - 120px)"
+                ></input-text>
+                <input-text
+                  @value="formInfo.phoneExt = $event"
+                  label="ext"
+                  vertical
+                  type="number"
+                  maxlength="5"
+                  placeholder="ext"
+                  width="120px"
+                ></input-text>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <input-text
+                  @value=";(formInfo.email = $event), (emailExist = false)"
+                  :validateText="
+                    validateInfo.email
+                      ? 'Please insert email'
+                      : '' || /\S+@\S+\.\S+/.test(formInfo.email)
+                      ? ''
+                      : 'Incorrect email format'
+                  "
+                  :isEmpty="validateInfo.email"
+                  :specific="emailExist"
+                  :specificText="emailExist ? 'This email exists' : ''"
+                  label="Email"
+                  vertical
+                  maxlength="30"
+                  type="email"
+                  placeholder="Email"
+                  :defaultValue="formInfo.email"
+                ></input-text>
+              </div>
+              <div class="col-12">
+                <input-text
+                  textarea
+                  @value="formInfo.address = $event"
+                  label="Address"
+                  vertical
+                  maxlength="255"
+                  placeholder="Please enter your address..."
+                ></input-text>
               </div>
               <div class="col-sm-12 text-left">
                 <button
@@ -115,7 +105,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-8">
+      <div class="col-md-8 col-lg-9">
         <div class="card">
           <customer-list :data="customerList"></customer-list>
         </div>
@@ -161,15 +151,18 @@ export default {
         email: false,
         name: false,
         surname: false,
-        address: false,
       },
       customerList: {
         items: [],
       },
+      emailExist: false,
     }
   },
   computed: {
-    ...mapGetters('CustomerStorage', ['GET_CUSTOMER_DATA', 'GET_DATA']),
+    ...mapGetters('CustomerStorage', [
+      'GET_CUSTOMER_DATA',
+      'GET_CUSTOMER_ERROR',
+    ]),
   },
   mounted() {
     // this.CLEAR_CUSTOMER_DATA()
@@ -194,39 +187,12 @@ export default {
         email: false,
         name: false,
         surname: false,
-        address: false,
       }
+      this.emailExist = false
     },
     async submitFormInfo() {
       if (/\S+@\S+\.\S+/.test(this.formInfo.email)) {
-        var payload = this.formInfo
-        // var log =
-        //   '<div> name :' +
-        //   this.formInfo.name +
-        //   '</div>' +
-        //   '<div> surname :' +
-        //   this.formInfo.surname +
-        //   '</div>' +
-        //   '<div> phone :' +
-        //   this.formInfo.phone +
-        //   '</div>' +
-        //   '<div> phoneExt :' +
-        //   this.formInfo.phoneExt +
-        //   '</div>' +
-        //   '<div> email :' +
-        //   this.formInfo.email +
-        //   '</div>' +
-        //   '<div> address :' +
-        //   this.formInfo.address +
-        //   '</div>'
-
-        eventBus.$emit(
-          'on-toast',
-          'success',
-          'Success',
-          'Insert customer data complete.'
-        )
-        await this.ADD_CUSTOMER_DATA({
+        this.ADD_CUSTOMER_DATA({
           index: this.GET_CUSTOMER_DATA.length,
           cid:
             this.GET_CUSTOMER_DATA.length +
@@ -240,7 +206,18 @@ export default {
           address: this.formInfo.address,
           status: 'Active',
         })
-        this.$_clearForm('formInfo', 'reloadInfo')
+        if (!this.GET_CUSTOMER_ERROR) {
+          eventBus.$emit(
+            'on-toast',
+            'success',
+            'Success',
+            'Insert data complete.'
+          )
+          this.$_clearForm('formInfo', 'reloadInfo')
+        } else {
+          eventBus.$emit('on-toast', 'danger', 'Warning', 'This email exists.')
+          this.emailExist = true
+        }
       }
     },
   },

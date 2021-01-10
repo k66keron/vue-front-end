@@ -55,14 +55,19 @@
                     </template>
                     <template v-slot:cell(action)="data">
                       <button
-                        class="btn btn-edit"
+                        class="btn btn-edit pt-0 pb-0"
                         @click="targetEdit = data.item.cid"
                       >
                         <b-icon-pencil></b-icon-pencil>
                       </button>
                       <button
-                        class="btn btn-delete"
-                        @click="targetRemove = data.index"
+                        class="btn btn-delete pt-0 pb-0"
+                        @click="
+                          targetRemove = {
+                            cid: data.item.cid,
+                            email: data.item.email,
+                          }
+                        "
                       >
                         <b-icon-x-circle-fill></b-icon-x-circle-fill>
                       </button>
@@ -96,6 +101,10 @@
       </div>
     </div>
     <customer-modal-edit :targetEdit="targetEdit" @close="targetEdit = ''" />
+    <customer-modal-remove
+      :targetRemove="targetRemove"
+      @close="targetRemove = {}"
+    />
   </div>
 </template>
 <script>
@@ -106,6 +115,7 @@ import BreadCrumb from '@/components/templates/bread-crumb.vue'
 import InputText from '@/components/share/input-text.vue'
 import SelectBasic from '@/components/share/select-basic.vue'
 import CustomerModalEdit from '@/components/customer/customer-edit-modal.vue'
+import CustomerModalRemove from '@/components/customer/customer-remove-modal.vue'
 
 export default {
   name: 'CustomersFilter',
@@ -114,6 +124,7 @@ export default {
     'input-text': InputText,
     'select-basic': SelectBasic,
     'customer-modal-edit': CustomerModalEdit,
+    'customer-modal-remove': CustomerModalRemove,
   },
   data() {
     return {
@@ -199,6 +210,7 @@ export default {
         },
       ],
       targetEdit: '',
+      targetRemove: {},
     }
   },
   watch: {
