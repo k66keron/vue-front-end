@@ -118,6 +118,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { eventBus } from '@/main.js'
+
 // import component
 import BreadCrumb from '@/components/templates/bread-crumb.vue'
 import CustomerList from '@/components/customer/customer-list.vue'
@@ -131,15 +132,6 @@ export default {
   },
   data() {
     return {
-      breadcrumbItems: [
-        {
-          text: 'Customer',
-          href: '#',
-        },
-        {
-          text: 'Register',
-        },
-      ],
       reloadInfo: true,
       formInfo: {
         email: '',
@@ -165,13 +157,21 @@ export default {
       'GET_CUSTOMER_DATA',
       'GET_CUSTOMER_ERROR',
     ]),
+    breadcrumbItems() {
+      return [
+        {
+          text: this.$_i18n('customer'),
+          href: '#',
+        },
+        {
+          text: this.$_i18n('register'),
+        },
+      ]
+    },
   },
   mounted() {
-    // this.CLEAR_CUSTOMER_DATA()
     this.customerList.items = Object.assign([], this.GET_CUSTOMER_DATA)
-    setInterval(() => {
-      // this.ADD_CUSTOMER_DATA(this.formInfo)
-    }, 500)
+    setInterval(() => {}, 500)
   },
   watch: {
     GET_CUSTOMER_DATA(val, oldVal) {

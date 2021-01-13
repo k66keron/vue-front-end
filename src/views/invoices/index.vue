@@ -14,8 +14,9 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-// import { eventBus } from '@/main.js'
 import axios from 'axios'
+
+// import components
 import BreadCrumb from '@/components/templates/bread-crumb.vue'
 import InvoicesFilter from '@/components/invoices/invoices-filter.vue'
 import InvoicesResult from '@/components/invoices/invoices-result.vue'
@@ -25,24 +26,15 @@ export default {
   components: {
     breadcrumb: BreadCrumb,
     'invoices-filter': InvoicesFilter,
-    'invoices-result': InvoicesResult
+    'invoices-result': InvoicesResult,
   },
   data() {
     return {
-      breadcrumbItems: [
-        {
-          text: 'Invoices',
-          href: '#'
-        },
-        {
-          text: 'Invoices List'
-        }
-      ],
       filterBasic: {},
       filterAdvanced: {},
       resultList: {
-        items: []
-      }
+        items: [],
+      },
     }
   },
   watch: {
@@ -51,10 +43,24 @@ export default {
     },
     GET_DEFAULT_ADVANCED(val, oldVal) {
       this.filterAdvanced = Object.assign({}, val)
-    }
+    },
   },
   computed: {
-    ...mapGetters('InvoicesList', ['GET_DEFAULT_BASIC', 'GET_DEFAULT_ADVANCED'])
+    ...mapGetters('InvoicesList', [
+      'GET_DEFAULT_BASIC',
+      'GET_DEFAULT_ADVANCED',
+    ]),
+    breadcrumbItems() {
+      return [
+        {
+          text: this.$_i18n('invoices'),
+          href: '#',
+        },
+        {
+          text: this.$_i18n('list'),
+        },
+      ]
+    },
   },
   mounted() {
     this.filterBasic = Object.assign({}, this.GET_DEFAULT_BASIC)
@@ -65,10 +71,9 @@ export default {
       'ADD_DEFAULT_BASIC',
       'CLEAR_DEFAULT_BASIC',
       'ADD_DEFAULT_ADVANCED',
-      'CLEAR_DEFAULT_ADVANCED'
+      'CLEAR_DEFAULT_ADVANCED',
     ]),
     async searchBasic(value) {
-      // eventBus.$emit('on-toast', 'primary', 'Title', 'Go to <a href="https://www.google.co.th" target="_blank">Google</a>')
       this.ADD_DEFAULT_BASIC(value)
       await this.CLEAR_DEFAULT_ADVANCED()
 
@@ -82,7 +87,7 @@ export default {
       await axios({
         method: 'GET',
         url: 'http://localhost:3000/invoices',
-        params: params
+        params: params,
       })
         .then((response) => {
           this.resultList.items = response.data
@@ -104,7 +109,7 @@ export default {
       await axios({
         method: 'GET',
         url: 'http://localhost:3000/invoices',
-        params: params
+        params: params,
       })
         .then((response) => {
           console.log(response.data)
@@ -113,7 +118,7 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    }
-  }
+    },
+  },
 }
 </script>

@@ -34,6 +34,8 @@ const messages = {
     info: 'Info',
     remove: 'Remove',
     fromCustomerList: 'from Customer list',
+    list: 'List',
+    invoices: 'Invoices',
     //
     totalResult: 'Total result',
     noResult: 'Empty Result',
@@ -85,6 +87,8 @@ const messages = {
     info: 'ข้อมูล',
     remove: 'ลบ',
     fromCustomerList: 'ออกจาก รายการผู้ใช้บริการ',
+    list: 'รายการ',
+    invoices: 'ใบกำกับภาษี',
     //
     totalResult: 'รายการทั้งหมด',
     noResult: 'ไม่พบข้อมูล',

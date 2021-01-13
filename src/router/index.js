@@ -3,14 +3,13 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const Admin = () =>
-  import('@/components/templates/main-admin.vue') /* เรียกการใช้งาน Admin */
+const Admin = () => import('@/components/templates/main-admin.vue')
 const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      component: Admin /* กำหนดให้ Component หลักไปใช้งาน Admin */,
+      component: Admin,
       children: [
         {
           path: '',
@@ -29,35 +28,6 @@ const router = new Router({
         },
       ],
     },
-    // {
-    //   path: '/banners',
-    //   name: 'Banners',
-    //   component: Admin,
-    //   children: [
-    //     {
-    //       path: 'group',
-    //       name: 'BannersGroup',
-    //       component: () => import('@/views/banners/group/index.vue'),
-    //     },
-    //     {
-    //       path: 'single',
-    //       name: 'BannersSingle',
-    //       component: () => import('@/views/banners/single/index.vue'),
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: '/reports',
-    //   name: 'Reports',
-    //   component: Admin,
-    //   children: [
-    //     {
-    //       path: 'invoice',
-    //       name: 'Reportsinvoice',
-    //       component: () => import('@/views/reports/tests/invoice.vue'),
-    //     },
-    //   ],
-    // },
     {
       path: '/customer',
       name: 'Customer',
@@ -67,11 +37,6 @@ const router = new Router({
           path: 'register',
           name: 'FormsRegisterCustomer',
           component: () => import('@/views/customer/register.vue'),
-        },
-        {
-          path: 'list',
-          name: 'ListCustomer',
-          component: () => import('@/views/customer/list.vue'),
         },
       ],
     },

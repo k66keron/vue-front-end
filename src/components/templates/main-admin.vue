@@ -7,8 +7,8 @@
         </a>
       </div>
       <!-- <div class="avatar">
-                <img class="avatar-img" src="@/assets/image/avatar.png"/>
-            </div> -->
+        <img class="avatar-img" src="@/assets/image/avatar.png"/>
+      </div> -->
       <ul class="menu mt-2">
         <li :class="currentPage.name.includes('HelloWorld') ? 'active' : ''">
           <router-link to="/">{{ $t('menu.home') }}</router-link>
@@ -68,9 +68,6 @@
             </li>
           </ul>
         </li>
-        <!-- <li :class="currentPage.name.includes('About') ? 'active' : ''">
-                    <router-link to="/about">About</router-link>
-                </li> -->
       </ul>
       <div class="footer">Copyright ©2020 All rights reserved</div>
     </div>
@@ -170,7 +167,6 @@ export default {
   },
   computed: {
     currentPage() {
-      //   document.querySelectorAll('.expand-menu.active').forEach(obj => obj.classList.remove('active'))
       return this.$route
     },
     ...mapGetters('language', ['GET_I18N']),
@@ -236,7 +232,6 @@ export default {
     },
     onLogOut() {
       localStorage.removeItem('epro')
-      //   console.log(JSON.parse(localStorage.getItem('epro')))
       this.$router.push({
         path: '/login',
       })
