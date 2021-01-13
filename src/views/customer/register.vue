@@ -97,10 +97,10 @@
                   {{ $t('register') }}
                 </button>
                 <button
-                  class="btn btn-secondary form-group ml-2"
+                  class="btn btn-link form-group ml-2"
                   @click="resetCustomers"
                 >
-                  {{ $t('cancel') }}
+                  {{ $t('reset') }}
                 </button>
               </div>
             </div>
