@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import i18n from './plugins/i18n'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -105,6 +106,9 @@ Vue.mixin({
         this[reload] = true
       })
     },
+    $_i18n(colName) {
+      return this.$i18n.t(colName)
+    },
   },
 })
 
@@ -114,6 +118,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   components: { App },
   template: '<App/>',
 })

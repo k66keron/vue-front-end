@@ -9,37 +9,39 @@
               <div class="col-12">
                 <input-text
                   @value="formInfo.name = $event"
-                  :validateText="validateInfo.name ? 'Please insert Name' : ''"
+                  :validateText="
+                    validateInfo.name ? $t('placeholder.name') : ''
+                  "
                   :isEmpty="validateInfo.name"
-                  label="Name"
+                  :label="$t('name') + '*'"
                   vertical
                   type="text"
                   maxlength="30"
-                  placeholder="Name"
+                  :placeholder="$t('placeholder.name')"
                 ></input-text>
               </div>
               <div class="col-12">
                 <input-text
                   @value="formInfo.surname = $event"
                   :validateText="
-                    validateInfo.surname ? 'Please insert Surname' : ''
+                    validateInfo.surname ? $t('placeholder.surname') : ''
                   "
                   :isEmpty="validateInfo.surname"
-                  label="Surname"
+                  :label="$t('surname') + '*'"
                   vertical
                   type="text"
                   maxlength="30"
-                  placeholder="Surname"
+                  :placeholder="$t('placeholder.surname')"
                 ></input-text>
               </div>
               <div class="col-12">
                 <input-text
                   @value="formInfo.phone = $event"
-                  label="Phone"
+                  :label="$t('phone')"
                   vertical
                   type="number"
                   maxlength="10"
-                  placeholder="Phone"
+                  :placeholder="$t('placeholder.phone')"
                   width="calc(100% - 120px)"
                 ></input-text>
                 <input-text
@@ -48,7 +50,7 @@
                   vertical
                   type="number"
                   maxlength="5"
-                  placeholder="ext"
+                  :placeholder="$t('placeholder.ext')"
                   width="120px"
                 ></input-text>
               </div>
@@ -59,19 +61,19 @@
                   @value=";(formInfo.email = $event), (emailExist = false)"
                   :validateText="
                     validateInfo.email
-                      ? 'Please insert email'
+                      ? $t('placeholder.email')
                       : '' || /\S+@\S+\.\S+/.test(formInfo.email)
                       ? ''
-                      : 'Incorrect email format'
+                      : $t('placeholder.emailType')
                   "
                   :isEmpty="validateInfo.email"
                   :specific="emailExist"
-                  :specificText="emailExist ? 'This email exists' : ''"
-                  label="Email"
+                  :specificText="emailExist ? $t('emailExist') : ''"
+                  :label="$t('email') + '*'"
                   vertical
                   maxlength="30"
                   type="email"
-                  placeholder="Email"
+                  :placeholder="$t('placeholder.email')"
                   :defaultValue="formInfo.email"
                 ></input-text>
               </div>
@@ -79,10 +81,10 @@
                 <input-text
                   textarea
                   @value="formInfo.address = $event"
-                  label="Address"
+                  :label="$t('address')"
                   vertical
                   maxlength="255"
-                  placeholder="Please enter your address..."
+                  :placeholder="$t('placeholder.address')"
                 ></input-text>
               </div>
               <div class="col-sm-12 text-left">
@@ -92,13 +94,13 @@
                     $_validateForm('formInfo', 'validateInfo', 'submitFormInfo')
                   "
                 >
-                  Register
+                  {{ $t('register') }}
                 </button>
                 <button
                   class="btn btn-secondary form-group ml-2"
                   @click="resetCustomers"
                 >
-                  Reset
+                  {{ $t('cancel') }}
                 </button>
               </div>
             </div>

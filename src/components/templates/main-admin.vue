@@ -11,14 +11,14 @@
             </div> -->
       <ul class="menu mt-2">
         <li :class="currentPage.name.includes('HelloWorld') ? 'active' : ''">
-          <router-link to="/">Home</router-link>
+          <router-link to="/">{{ $t('menu.home') }}</router-link>
         </li>
         <li
           class="expand-menu"
           :class="currentPage.path.includes('/customer') ? 'active' : ''"
           @click="$event.target.classList.toggle('active')"
         >
-          <a>Customer [Vuex]<b-icon-caret-left-fill /></a>
+          <a>{{ $t('menu.customer') }} [Vuex]<b-icon-caret-left-fill /></a>
           <ul class="menu">
             <li
               :class="
@@ -27,24 +27,23 @@
                   : ''
               "
             >
-              <router-link to="/customer/register">Register</router-link>
+              <router-link to="/customer/register">{{
+                $t('menu.register')
+              }}</router-link>
             </li>
-            <!-- <li
-              :class="currentPage.name.includes('ListCustomer') ? 'active' : ''"
-            >
-              <router-link to="/customer/list">List</router-link>
-            </li> -->
           </ul>
         </li>
         <li :class="currentPage.name.includes('Invoices') ? 'active' : ''">
-          <router-link to="/invoices">Invoices [RESTfulAPI]</router-link>
+          <router-link to="/invoices"
+            >{{ $t('menu.invoices') }} [RESTfulAPI]</router-link
+          >
         </li>
         <li
           class="expand-menu"
           :class="currentPage.path.includes('/bootstrap-vue') ? 'active' : ''"
           @click="$event.target.classList.toggle('active')"
         >
-          <a>Expand 2<b-icon-caret-left-fill /></a>
+          <a>{{ $t('menu.expand') }} 2<b-icon-caret-left-fill /></a>
           <ul class="menu">
             <li :class="currentPage.name === 'BTable' ? 'active' : ''">
               <router-link to="/bootstrap-vue/b-table"
@@ -58,7 +57,7 @@
                 currentPage.path.includes('/bootstrap-vue') ? 'active' : ''
               "
             >
-              <a>Expand 3<b-icon-caret-left-fill /></a>
+              <a>{{ $t('menu.expand') }} 3<b-icon-caret-left-fill /></a>
               <ul class="menu">
                 <li :class="currentPage.name === 'BTable' ? 'active' : ''">
                   <router-link to="/bootstrap-vue/b-table"
@@ -81,7 +80,13 @@
           <b-icon-list />
         </a>
         <b-navbar-nav class="ml-auto float-right">
-          <b-nav-item class="nav-icon" @click="onToast()">
+          <b-nav-item
+            class="nav-icon"
+            @click="localLanguage = localLanguage === 'TH' ? 'EN' : 'TH'"
+          >
+            {{ localLanguage }}
+          </b-nav-item>
+          <b-nav-item class="nav-icon">
             <b-icon-bell /><b-badge class="alert-badge">1</b-badge>
           </b-nav-item>
           <b-nav-item class="nav-icon">
@@ -97,7 +102,7 @@
               <b-icon-envelope /><b-badge class="primary-badge">2</b-badge>
             </template>
             <b-dropdown-text
-              >You have 2 new messages
+              >{{ $t('gotMessege', { text: '2' }) }}
               <b-badge class="primary-badge">2</b-badge></b-dropdown-text
             >
             <b-dropdown-item href="#">
@@ -120,9 +125,9 @@
                 <div class="msg-date">Today, 2:25 PM</div>
               </div>
             </b-dropdown-item>
-            <b-dropdown-item class="text-center"
-              >See All Messages</b-dropdown-item
-            >
+            <b-dropdown-item class="text-center">{{
+              $t('seeAllMessages')
+            }}</b-dropdown-item>
           </b-dropdown>
           <b-dropdown class="dropdown-user" right no-caret>
             <template v-slot:button-content>
@@ -130,17 +135,17 @@
             </template>
             <b-dropdown-item href="#"
               ><b-icon-envelope /><b-badge class="primary-badge">2</b-badge>
-              <span class="ml-1">Inbox</span></b-dropdown-item
+              <span class="ml-1">{{ $t('inbox') }}</span></b-dropdown-item
             >
             <b-dropdown-item href="#"
               ><b-icon-gear />
-              <span class="ml-1">Preference</span></b-dropdown-item
+              <span class="ml-1">{{ $t('profile') }}</span></b-dropdown-item
             >
             <b-dropdown-item href="#"
               ><b-icon-power />
-              <span class="ml-1" @click="onLogOut()"
-                >Logout</span
-              ></b-dropdown-item
+              <span class="ml-1" @click="onLogOut()">{{
+                $t('logout')
+              }}</span></b-dropdown-item
             >
           </b-dropdown>
         </b-navbar-nav>
@@ -152,12 +157,15 @@
 </template>
 <script>
 import { eventBus } from '@/main.js'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'MainAdmin',
   data() {
     return {
       path: '',
       leftBar: true,
+      localLanguage: '',
     }
   },
   computed: {
@@ -165,6 +173,17 @@ export default {
       //   document.querySelectorAll('.expand-menu.active').forEach(obj => obj.classList.remove('active'))
       return this.$route
     },
+    ...mapGetters('language', ['GET_I18N']),
+  },
+  created() {
+    this.localLanguage = this.GET_I18N
+  },
+  watch: {
+    localLanguage(val) {
+      this.ADD_I18N(val)
+      this.$i18n.locale = val
+    },
+    deep: true,
   },
   mounted() {
     window.onscroll = function () {
@@ -188,6 +207,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions('language', ['ADD_I18N']),
     onToast() {
       eventBus.$emit(
         'on-toast',

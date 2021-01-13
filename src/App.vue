@@ -14,8 +14,8 @@ export default {
   name: 'App',
   components: {
     'modal-error': ModalError,
-    toast: Toast
-  }
+    toast: Toast,
+  },
 }
 </script>
 <style>

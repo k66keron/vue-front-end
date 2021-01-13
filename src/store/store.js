@@ -6,6 +6,8 @@ import createPersistedState from 'vuex-persistedstate'
 import InvoicesList from '@/store/modules/invoices/list'
 import CustomerList from '@/store/modules/customer/list'
 import CustomerStorage from '@/store/modules/customer/storage'
+import language from '@/store/modules/i18n'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -19,6 +21,7 @@ const store = new Vuex.Store({
     InvoicesList,
     CustomerList,
     CustomerStorage,
+    language,
   },
 })
 

@@ -5,7 +5,7 @@
         <input-text
           @value="search = $event"
           :disabled="items.length == 0"
-          placeholder="Search"
+          :placeholder="$t('placeholder.search')"
           type="normal"
           icon="search"
           maxlength="10"
@@ -28,8 +28,8 @@
             class="table-result"
             id="invoice-table"
             ref="invoicetable"
-            :empty-text="'No Result'"
-            :empty-filtered-text="'No Result'"
+            :empty-text="$t('noResult')"
+            :empty-filtered-text="$t('noResult')"
             :show-empty="items.length == 0"
             :items="items"
             :fields="fields"
@@ -82,7 +82,9 @@
     </div>
     <div class="row" v-if="items.length > 0">
       <div class="col-sm-6 text-left">
-        <div class="absolute-bottom">Total result: {{ totalResult }}</div>
+        <div class="absolute-bottom">
+          {{ $t('totalResult') }}: {{ totalResult }}
+        </div>
       </div>
       <div class="col-sm-6 mt-2">
         <b-pagination
@@ -128,6 +130,10 @@ export default {
         }
       },
     },
+    field: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -151,58 +157,58 @@ export default {
           value: '50',
         },
       ],
-      fields: [
-        {
-          key: 'index',
-          label: 'No.',
-          thStyle: 'width:60px',
-          class: 'text-center',
-        },
-        {
-          key: 'name',
-          label: 'Customer Name',
-          thStyle: 'width: 240px',
-          sortable: true,
-          formatter: (value, key, item) => {
-            return value + ' ' + item.surname
-          },
-        },
-        {
-          key: 'phone',
-          label: 'Phone',
-          thStyle: 'width: 120px',
-          sortable: true,
-          formatter: (value, key, item) => {
-            return value + ' ' + item.phoneExt
-          },
-        },
-        {
-          key: 'email',
-          label: 'E-mail',
-          thStyle: 'width: 200px',
-          sortable: true,
-        },
-        {
-          key: 'address',
-          label: 'Address',
-          thStyle: 'width: 200px',
-          sortable: true,
-        },
-        {
-          key: 'status',
-          label: 'Status',
-          class: 'text-center',
-          thStyle: 'width: 100px',
-          sortable: true,
-        },
-        {
-          key: 'action',
-          label: 'Action',
-          thStyle: 'width: 120px',
-          thClass: 'text-center',
-          tdClass: 'text-center',
-        },
-      ],
+      // fields: [
+      // {
+      //   key: 'index',
+      //   label: this.$_i18n('no'),
+      //   thStyle: 'width:60px',
+      //   class: 'text-center',
+      // },
+      // {
+      //   key: 'name',
+      //   label: this.$_i18n('customerName'),
+      //   thStyle: 'width: 240px',
+      //   sortable: true,
+      //   formatter: (value, key, item) => {
+      //     return value + ' ' + item.surname
+      //   },
+      // },
+      // {
+      //   key: 'phone',
+      //   label: this.$_i18n('phone'),
+      //   thStyle: 'width: 120px',
+      //   sortable: true,
+      //   formatter: (value, key, item) => {
+      //     return value + ' ' + item.phoneExt
+      //   },
+      // },
+      // {
+      //   key: 'email',
+      //   label: this.$_i18n('email'),
+      //   thStyle: 'width: 200px',
+      //   sortable: true,
+      // },
+      // {
+      //   key: 'address',
+      //   label: this.$_i18n('address'),
+      //   thStyle: 'width: 200px',
+      //   sortable: true,
+      // },
+      // {
+      //   key: 'status',
+      //   label: this.$_i18n('status'),
+      //   class: 'text-center',
+      //   thStyle: 'width: 100px',
+      //   sortable: true,
+      // },
+      // {
+      //   key: 'action',
+      //   label: this.$_i18n('action'),
+      //   thStyle: 'width: 120px',
+      //   thClass: 'text-center',
+      //   tdClass: 'text-center',
+      // },
+      // ],
       targetEdit: '',
       targetRemove: {},
     }
@@ -217,6 +223,60 @@ export default {
   computed: {
     firstRowOnPage() {
       return this.perPage * (this.currentPage - 1) + 1
+    },
+    fields() {
+      return [
+        {
+          key: 'index',
+          label: this.$_i18n('no'),
+          thStyle: 'width:60px',
+          class: 'text-center',
+        },
+        {
+          key: 'name',
+          label: this.$_i18n('customerName'),
+          thStyle: 'width: 240px',
+          sortable: true,
+          formatter: (value, key, item) => {
+            return value + ' ' + item.surname
+          },
+        },
+        {
+          key: 'phone',
+          label: this.$_i18n('phone'),
+          thStyle: 'width: 120px',
+          sortable: true,
+          formatter: (value, key, item) => {
+            return value + ' ' + item.phoneExt
+          },
+        },
+        {
+          key: 'email',
+          label: this.$_i18n('email'),
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'address',
+          label: this.$_i18n('address'),
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'status',
+          label: this.$_i18n('status'),
+          class: 'text-center',
+          thStyle: 'width: 100px',
+          sortable: true,
+        },
+        {
+          key: 'action',
+          label: this.$_i18n('action'),
+          thStyle: 'width: 120px',
+          thClass: 'text-center',
+          tdClass: 'text-center',
+        },
+      ]
     },
   },
   methods: {

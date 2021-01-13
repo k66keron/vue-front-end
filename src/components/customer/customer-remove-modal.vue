@@ -1,7 +1,7 @@
 <template>
   <!-- edit modal -->
   <b-modal
-    title="Remove Customer"
+    :title="$t('removeCustomer')"
     :hideHeaderClose="true"
     content-class="danger"
     ref="remove-modal"
@@ -11,16 +11,18 @@
     <div slot="default">
       <div class="row">
         <div class="col-12">
-          Remove
-          <span style="color: tomato">{{ targetRemove.email }}</span> from
-          Customer list ?
+          {{ $t('remove') }}
+          <span style="color: tomato">{{ targetRemove.email }}</span>
+          {{ $t('fromCustomerList') }} ?
         </div>
       </div>
     </div>
     <div slot="modal-footer">
-      <button type="button" class="btn cancel" @click="onClose">CANCEL</button>
+      <button type="button" class="btn cancel" @click="onClose">
+        {{ $t('cancel') }}
+      </button>
       <button type="button" class="btn confirm" @click="removeCustomer">
-        OK
+        {{ $t('ok') }}
       </button>
     </div>
   </b-modal>

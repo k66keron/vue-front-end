@@ -1,7 +1,7 @@
 <template>
   <!-- edit modal -->
   <b-modal
-    title="Edit info"
+    :title="$t('editInfo')"
     :hideHeaderClose="true"
     content-class="info"
     ref="edit-modal"
@@ -17,14 +17,14 @@
                 :defaultValue="editValue.name"
                 @value="formEditInfo.name = $event"
                 :validateText="
-                  validateEditInfo.name ? 'Please insert Name' : ''
+                  validateEditInfo.name ? $t('placeholder.name') : ''
                 "
                 :isEmpty="validateEditInfo.name"
-                label="Name"
+                :label="$t('name') + '*'"
                 vertical
                 type="text"
                 maxlength="30"
-                placeholder="Name"
+                :placeholder="$t('placeholder.name')"
               ></input-text>
             </div>
             <div class="col-12">
@@ -32,25 +32,25 @@
                 :defaultValue="editValue.surname"
                 @value="formEditInfo.surname = $event"
                 :validateText="
-                  validateEditInfo.surname ? 'Please insert Surname' : ''
+                  validateEditInfo.surname ? $t('placeholder.surname') : ''
                 "
                 :isEmpty="validateEditInfo.surname"
-                label="Surname"
+                :label="$t('surname') + '*'"
                 vertical
                 type="text"
                 maxlength="30"
-                placeholder="Surname"
+                :placeholder="$t('placeholder.surname')"
               ></input-text>
             </div>
             <div class="col-12">
               <input-text
                 :defaultValue="editValue.phone"
                 @value="formEditInfo.phone = $event"
-                label="Phone"
+                :label="$t('phone')"
                 vertical
                 type="number"
                 maxlength="10"
-                placeholder="Phone"
+                :placeholder="$t('placeholder.phone')"
                 width="calc(100% - 120px)"
               ></input-text>
               <input-text
@@ -60,7 +60,7 @@
                 vertical
                 type="number"
                 maxlength="5"
-                placeholder="ext"
+                :placeholder="$t('placeholder.ext')"
                 width="120px"
               ></input-text>
             </div>
@@ -70,7 +70,7 @@
           <div class="row">
             <div class="col-12">
               <input-text
-                label="Email"
+                :label="$t('email') + '*'"
                 vertical
                 maxlength="30"
                 type="email"
@@ -83,10 +83,10 @@
               <input-text
                 textarea
                 @value="formEditInfo.address = $event"
-                label="Address"
+                :label="$t('address')"
                 vertical
                 maxlength="255"
-                placeholder="Please enter your address..."
+                :placeholder="$t('placeholder.address')"
                 :defaultValue="editValue.address"
               ></input-text>
             </div>
@@ -106,7 +106,7 @@
     </div>
     <div slot="modal-footer">
       <button type="button" class="btn cancel" @click="onClose()">
-        CANCEL
+        {{ $t('cancel') }}
       </button>
       <button
         type="button"
@@ -115,7 +115,7 @@
           $_validateForm('formEditInfo', 'validateEditInfo', 'submitEditInfo')
         "
       >
-        SUBMIT
+        {{ $t('ok') }}
       </button>
     </div>
   </b-modal>
