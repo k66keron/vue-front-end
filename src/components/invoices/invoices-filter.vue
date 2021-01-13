@@ -1,30 +1,28 @@
 <template>
   <b-tabs>
-    <b-tab title="Basic" active>
+    <b-tab :title="$t('basic')" active>
       <div class="body-tab">
         <div class="row align-items-end text-left">
           <div class="col-md-4 col-lg-3">
             <input-text
               @value="filterBasic.invoiceNo = $event"
               :defaultValue="filterBasic.invoiceNo"
-              label="Invoice No."
+              :label="$t('invoiceNo')"
               vertical
               maxlength="20"
-              placeholder="Invoice No."
             ></input-text>
           </div>
           <div class="col-md-4 col-lg-3">
             <input-text
               @value="filterBasic.customerId = $event"
               :defaultValue="filterBasic.customerId"
-              label="Customer ID"
+              :label="$t('customerId')"
               vertical
               maxlength="20"
-              placeholder="Customer ID"
             ></input-text>
           </div>
           <div class="col-sm-12">
-            <div class="label-text">Invoice Status</div>
+            <div class="label-text">{{ $t('invoiceStatus') }}</div>
           </div>
           <div class="col-sm-12">
             <div class="checkbox-filter" style="margin: 4px 0px 8px 0px">
@@ -58,13 +56,13 @@
               class="btn btn-primary btn-icon form-group"
               @click="$_validateForm('filterBasic', '', '$_searchBasic')"
             >
-              <b-icon-search /> Search
+              <b-icon-search /> {{ $t('search') }}
             </button>
           </div>
         </div>
       </div>
     </b-tab>
-    <b-tab title="Advanced">
+    <b-tab :title="$t('advanced')">
       <div class="body-tab">
         <div class="row align-items-end text-left">
           <div class="col-md-4 col-lg-3">
@@ -72,10 +70,9 @@
               @value="filterAdvanced.invoiceNo = $event"
               :defaultValue="filterAdvanced.invoiceNo"
               :isEmpty="validateAdvanced.invoiceNo"
-              label="Invoice No."
+              :label="$t('invoiceNo')"
               vertical
               maxlength="20"
-              placeholder="Invoice No."
             ></input-text>
           </div>
           <div class="col-md-4 col-lg-3">
@@ -83,24 +80,22 @@
               @value="filterAdvanced.customerId = $event"
               :defaultValue="filterAdvanced.customerId"
               :isEmpty="validateAdvanced.customerId"
-              label="Customer ID"
+              :label="$t('customerId')"
               vertical
               maxlength="20"
-              placeholder="Customer ID"
             ></input-text>
           </div>
           <div class="col-md-4 col-lg-3">
             <date-range
               @selected="$_onSelectedDateAdvanced($event)"
-              label="Date Range"
+              :label="$t('dateRange')"
               vertical
-              placeholder="Select date range"
               :default="defaultDateAdvanced"
               :isEmpty="validateAdvanced.dateUntil"
             ></date-range>
           </div>
           <div class="col-sm-12">
-            <div class="label-text">Invoice Status</div>
+            <div class="label-text">{{ $t('invoiceStatus') }}</div>
           </div>
           <div class="col-sm-12">
             <div class="checkbox-filter" style="margin: 4px 0px 8px 0px">
@@ -140,7 +135,7 @@
                 )
               "
             >
-              <b-icon-search /> Search
+              <b-icon-search /> {{ $t('search') }}
             </button>
           </div>
         </div>

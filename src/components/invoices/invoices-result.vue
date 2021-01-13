@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-sm-6">
         <input-text
-          @value="search=$event;"
-          :disabled="items.length==0"
+          @value="search = $event"
+          :disabled="items.length == 0"
           placeholder="Search"
           type="normal"
           icon="search"
@@ -15,9 +15,9 @@
       <div class="col-sm-6 float-right">
         <select-basic
           class="float-right"
-          @selected="perPage=$event"
+          @selected="perPage = $event"
           :items="pageItem"
-          :disabled="items.length==0"
+          :disabled="items.length == 0"
           :defaultValue="perPage"
           width="100px"
         ></select-basic>
@@ -30,7 +30,7 @@
             ref="invoicetable"
             :empty-text="'No Result'"
             :empty-filtered-text="'No Result'"
-            :show-empty="items.length==0"
+            :show-empty="items.length == 0"
             :items="items"
             :fields="fields"
             :perPage="perPage"
@@ -42,20 +42,28 @@
               {{ firstRowOnPage + data.index }}
             </template>
             <template v-slot:cell(invoiceNo)="data">
-              <router-link :to="{ path: '/invoices/detail', query: { invoiceNo: data.item.invoiceNo }}">{{data.item.invoiceNo}}</router-link>
+              <router-link
+                :to="{
+                  path: '/invoices/detail',
+                  query: { invoiceNo: data.item.invoiceNo },
+                }"
+                >{{ data.item.invoiceNo }}</router-link
+              >
             </template>
             <template v-slot:cell(status)="data">
-              <span class="label" :class="'label-'+data.value.toLowerCase()" v-html="data.value"></span>
+              <span
+                class="label"
+                :class="'label-' + data.value.toLowerCase()"
+                v-html="data.value"
+              ></span>
             </template>
           </b-table>
         </div>
       </div>
     </div>
-    <div class="row" v-if="items.length>0">
+    <div class="row" v-if="items.length > 0">
       <div class="col-sm-6 text-left">
-        <div class="absolute-bottom">
-          Total result: {{totalResult}}
-        </div>
+        <div class="absolute-bottom">Total result: {{ totalResult }}</div>
       </div>
       <div class="col-sm-6 mt-2">
         <b-pagination
@@ -80,30 +88,102 @@ export default {
   name: 'CustomersFilter',
   components: {
     'input-text': InputText,
-    'select-basic': SelectBasic
+    'select-basic': SelectBasic,
   },
   props: {
     data: {
       type: Object,
       default: () => {
         return {
-          items: []
+          items: [],
         }
-      }
-    }
+      },
+    },
   },
   watch: {
     'data.items': function (value) {
       this.items = value
       this.totalResult = value.length
-    }
+    },
   },
   computed: {
-    firstRowOnPage () {
-      return (this.perPage * (this.currentPage - 1)) + 1
-    }
+    firstRowOnPage() {
+      return this.perPage * (this.currentPage - 1) + 1
+    },
+    fields() {
+      return [
+        {
+          key: 'index',
+          label: this.$_i18n('no'),
+          thStyle: 'width:80px',
+          class: 'text-center',
+        },
+        {
+          key: 'invoiceNo',
+          label: this.$_i18n('invoiceNo'),
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'customerId',
+          label: this.$_i18n('customerId'),
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'status',
+          label: this.$_i18n('status'),
+          class: 'text-center',
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'zone',
+          label: this.$_i18n('zone'),
+          thStyle: 'width: 200px',
+          sortable: true,
+        },
+        {
+          key: 'date',
+          label: this.$_i18n('date'),
+          class: 'text-center',
+          thStyle: 'width: 160px',
+          sortable: true,
+          formatter: (value, key, item) => {
+            return this.FormatDate(value)
+          },
+        },
+        {
+          key: 'subTotal',
+          label: this.$_i18n('subTotal'),
+          sortable: true,
+          tdClass: 'text-right',
+          formatter: (value, key, item) => {
+            return this.FormatCurrency(value)
+          },
+        },
+        {
+          key: 'shipping',
+          label: this.$_i18n('shipping'),
+          sortable: true,
+          tdClass: 'text-right',
+          formatter: (value, key, item) => {
+            return this.FormatCurrency(value)
+          },
+        },
+        {
+          key: 'total',
+          label: this.$_i18n('total'),
+          sortable: true,
+          tdClass: 'text-right',
+          formatter: (value, key, item) => {
+            return this.FormatCurrency(item.shipping + item.subTotal)
+          },
+        },
+      ]
+    },
   },
-  data () {
+  data() {
     return {
       items: [],
       filter: null,
@@ -114,93 +194,23 @@ export default {
       pageItem: [
         {
           text: '5',
-          value: '5'
+          value: '5',
         },
         {
           text: '25',
-          value: '25'
+          value: '25',
         },
         {
           text: '50',
-          value: '50'
-        }
+          value: '50',
+        },
       ],
-      fields: [
-        {
-          key: 'index',
-          label: 'No.',
-          thStyle: 'width:80px',
-          class: 'text-center'
-        },
-        {
-          key: 'invoiceNo',
-          label: 'Invoice No.',
-          thStyle: 'width: 200px',
-          sortable: true
-        },
-        {
-          key: 'customerId',
-          label: 'Customer ID',
-          thStyle: 'width: 200px',
-          sortable: true
-        },
-        {
-          key: 'status',
-          label: 'Status',
-          class: 'text-center',
-          thStyle: 'width: 200px',
-          sortable: true
-        },
-        {
-          key: 'zone',
-          label: 'Zone',
-          thStyle: 'width: 200px',
-          sortable: true
-        },
-        {
-          key: 'date',
-          label: 'Date',
-          class: 'text-center',
-          thStyle: 'width: 160px',
-          sortable: true,
-          formatter: (value, key, item) => {
-            return this.FormatDate(value)
-          }
-        },
-        {
-          key: 'subTotal',
-          label: 'Sub Total',
-          sortable: true,
-          tdClass: 'text-right',
-          formatter: (value, key, item) => {
-            return this.FormatCurrency(value)
-          }
-        },
-        {
-          key: 'shipping',
-          label: 'Shipping',
-          sortable: true,
-          tdClass: 'text-right',
-          formatter: (value, key, item) => {
-            return this.FormatCurrency(value)
-          }
-        },
-        {
-          key: 'total',
-          label: 'Total',
-          sortable: true,
-          tdClass: 'text-right',
-          formatter: (value, key, item) => {
-            return this.FormatCurrency(item.shipping + item.subTotal)
-          }
-        }
-      ]
     }
   },
   methods: {
-    async onFiltered (filteredItems) {
+    async onFiltered(filteredItems) {
       this.totalResult = filteredItems.length
-    }
-  }
+    },
+  },
 }
 </script>
