@@ -867,3 +867,34 @@ button {
 .modal-content > .modal-footer button {
   font-size: 11px !important;
 }
+.btn-delete > .b-icon {
+  color: #ff5f5f;
+  transition: 0.3s;
+}
+.btn-delete:hover > .b-icon {
+  color: #fe0000;
+}
+.pagination-custom .page-item.active .page-link {
+  color: #fff;
+  background-color: #626262;
+  border-color: #626262;
+}
+.pagination-custom .page-item .page-link {
+  color: #404040;
+  font-size: 12px;
+  transition: 0.2s;
+}
+.pagination-custom .page-item.disabled .page-link {
+  color: #c7c7c7;
+}
+.modal-content.no-content > .modal-body {
+  display: none;
+}
+.modal-content > .modal-footer button {
+  font-size: 12px;
+}
+.modal-content.danger > .modal-header,
+.modal-content.danger > .modal-footer .confirm {
+  background-color: tomato;
+  color: white;
+}

@@ -1,8 +1,3 @@
-// import {
-//   ToISOString
-// } from '@/utils/format-date.js'
-// import enum
-// import { RTEnum } from '@/enum/goods-return.enum.js'
 const InvoicesList = {
   namespaced: true,
   state: {
@@ -11,7 +6,6 @@ const InvoicesList = {
       customerId: '',
       status: ['Complete'],
       isStatus: {
-        // all: false,
         Pending: false,
         Complete: true,
         Delete: false,
@@ -26,7 +20,6 @@ const InvoicesList = {
       dateUntil: new Date().toISOString('en-GB'),
       status: [],
       isStatus: {
-        // all: false,
         Pending: false,
         Complete: false,
         Delete: false,
@@ -43,7 +36,6 @@ const InvoicesList = {
         customerId: '',
         status: ['Complete'],
         isStatus: {
-          // all: false,
           Pending: false,
           Complete: true,
           Delete: false,
@@ -63,7 +55,6 @@ const InvoicesList = {
         dateUntil: new Date().toISOString('en-GB'),
         status: [],
         isStatus: {
-          // all: false,
           Pending: false,
           Complete: false,
           Delete: false,
